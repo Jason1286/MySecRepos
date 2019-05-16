@@ -1,0 +1,182 @@
+---
+title: "R_teach"
+author: "Chin Chun-Chen"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#### [**基本功能**]  
+* [**計算機**]  
+* [**統計量**]  
+* [**Vector 向量** `c()`]    
+* [**Factor 類別變數** `factor()`]    
+* [**Matrix and Data Frame 矩陣和資料框**]  
+
+# **基本功能**
+### **計算機**    
+```{r}
+2+50
+2-20
+3*5
+10/5
+2^5 #次方
+31%%7 #顯示餘數
+31%/%7 #顯示商
+5*10+6-9 #四則運算
+```
+*** 輸入 "#" 可以用來附註說明，並不會影響程式碼的執行 
+
+> 例題：存錢在銀行，利率3%，現在存入10,000，20年後可以領回多少本利和？  
+
+```{r}
+n = 20 #令n代表20年
+rate = 0.03 #令interest代表利率3%
+initial = 10000 #令initial代表一開始存入的金額
+final = initial*(1 + rate)^n
+final #顯示20年後領回的本利和
+```
+### **統計量**  
+* **平均數**  `mean()`
+```{r}
+x = 1:20 #x代表從1~20的數列
+mean(x) 
+```
+* **變異數** `var()`
+```{r}
+x = 1:20 #x代表從1~20的數列
+var(x) 
+
+#原始公式
+sum((x - mean(x))^2) / 19
+```
+### **Vector 向量** `c()`
+##### **基本功能**  
+```{r}
+c(0, 2, 5)
+x = c(0, 5, 8) # 代表(0,5,8)這個向量
+x
+
+number5to25 = 1:25
+c(number5to25) #一個含有元素1~25的向量
+
+addvector = 55:60
+result = c(addvector, number5to25, 0:10) #向量合併
+result
+result[20] #取出第20個元素的值
+result[1:3] #取出第1~3個元素的值
+result[c(2,4,6)] #取出第2、4、6個元素的值
+y = c(1,2,3)
+y
+y[-2] #顯示y向量除了第二個元素以外的值
+result[-(20:25)] #不顯示第20~25個元素的值
+result[c(1, 5:7)] #顯示第1個和第5~7個元素的值
+#result[c(-2,3)] #錯誤輸入  
+
+```
+
+```{r}
+x = c(0,3,7)
+x * 3 #向量內的元素都乘3
+y = x - 5 #向量內的元素都減5
+y
+x^2 #向量內的元素都平方
+x = c(2,3,10)
+y = c(5,2,4)
+x^y #( 2^5, 3^2, 10^4)
+
+```
+##### **特殊函式**  
+> `seq()` 
+
+```{r}
+seq(1, 21, by = 2) #向量元素1~21，每兩個一數
+seq(1, 21, by = 3) #向量元素1~21，每三個一數
+```
+> `rep()`  
+rep(要重複的數字, 重複幾次)  
+
+```{r}
+rep(3, 10) #3重複10次
+rep(seq(1,20, by = 2), 2) #向量元素1~20每兩個一數後的數列重複兩次
+rep(c(1,4), c(3,2)) # 1重複3次, 4重複2次
+rep(c(2,5), each = 4) # 2,5兩個值都重複4次
+rep(c(2,5), each = 4)
+```
+##### **遺漏值和其他特殊的數值**  
+```{r}
+some.evens = NULL #創造一個空向量
+some.evens[seq(2,20,2)] = seq(2,20,2) #空向量內的偶數位置填入2到20的偶數
+some.evens
+```
+*NA代表遺漏值*
+```{r}
+x = c(0,7,8)
+x/x
+```
+*NaN代表"不是一個數字" => 0/0不存在*
+```{r}
+x = c(0,7,8)
+1/x
+```
+*r會試圖去計算1/0，所以最後會顯示無限大*
+
+##### **文字向量**  
+```{r}
+colors = c("red","yellow","blue")
+more.colors = c(colors, "green","magenta", "cyan") #向量疊加
+more.colors
+z = c("red", "balck", 1)
+z #1從數字型態被轉成字串型態
+
+```
+> `substr(x, start, stop)`  
+x為要切片的向量，start輸入切片的啟示位置，stop輸入切片的結束位置  
+
+```{r}
+colors = c("red","yellow","blue")
+substr(colors, 1, 2) #每個元素都會被切片
+```
+> `pastr()`  
+針對向量內的每個元素執行"貼上"
+
+```{r}
+colors = c("red","yellow","blue")
+paste(colors, "flower") #每個元素都會被切片
+paste("several", colors,"s",sep="") #sep ="" 把colors和s中間用"無空格"取代
+paste("I like", colors, collapse = ", ") #collapse把原本3個字串元素的向量變成1個
+```
+
+### **Factor 類別變數** `factor()`
+```{r}
+grp = c("control", "treatment", "control", "treatment")
+grp = factor(grp) # 轉換成factor型態
+grp #Levels的屬性代表: 在這個變數裡面，存在哪些類別
+
+as.integer(grp) #轉換成數值
+levels #查看有哪些類別變數
+```
+### **Matrix and Data Frame 矩陣和資料框**  
+###### **矩陣**`matrix()`  
+```{r}
+m = matrix(1:6, nrow = 2, ncol = 3)
+m
+m[1,2] #第一列(橫)的第三個數值
+m[4] #從第一行(直)開始數的第四個數值
+m[1,] #選取整個第一列(橫)
+m[,3] #選取整個第三行(直)
+```
+###### **陣列**`array()`    
+```{r}
+a = array(1:24, c(3,4,2)) #將1~24放入3x4的矩陣，總共2個
+a
+```
+###### **資料框**`data.frame()`
+```{r}
+colors = c("red","blue","yellow")
+numbers = c(1,2,3)
+colors.and.numbers = data.frame(colors, numbers, more.colors = c(4,5,6))
+colors.and.numbers
+```
+*data.frame的優點在與可以同事容納不同類型的資料*
